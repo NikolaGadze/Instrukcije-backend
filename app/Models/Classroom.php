@@ -10,4 +10,9 @@ class Classroom extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'status'];
+
+    public function schedule()
+    {
+        return $this->hasMany(Schedule::class, 'classroom_id');
+    }
 }

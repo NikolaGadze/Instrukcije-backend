@@ -10,4 +10,9 @@ class Subject extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'status'];
+
+    public function schedule()
+    {
+        return $this->hasMany(Schedule::class, 'subject_id');
+    }
 }

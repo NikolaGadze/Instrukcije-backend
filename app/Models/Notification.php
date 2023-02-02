@@ -10,4 +10,9 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = ['user_from', 'user_to', 'message', 'datetime', 'opened'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'notification_id');
+    }
 }
