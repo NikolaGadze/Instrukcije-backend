@@ -14,7 +14,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        return City::all();
+
     }
 
     /**
@@ -25,7 +26,10 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return City::create([
+            'name'=> $request->name,
+            'country_id'=> $request->country_id
+        ]);
     }
 
     /**
@@ -36,7 +40,7 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        //
+        return $city;
     }
 
     /**
@@ -48,7 +52,10 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        //
+        return $city->update([
+            'name'=> $request->name,
+            'country_id' => $request->country_id
+        ]);
     }
 
     /**
@@ -59,6 +66,6 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        return $city->delete();
     }
 }

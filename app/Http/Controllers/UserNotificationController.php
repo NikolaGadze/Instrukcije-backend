@@ -14,7 +14,7 @@ class UserNotificationController extends Controller
      */
     public function index()
     {
-        //
+        return UserNotification::all();
     }
 
     /**
@@ -25,7 +25,10 @@ class UserNotificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return UserNotification::create([
+           'user_id'=> $request->user_id,
+           'notification_id'=> $request->notification_id
+        ]);
     }
 
     /**
@@ -36,7 +39,7 @@ class UserNotificationController extends Controller
      */
     public function show(UserNotification $userNotification)
     {
-        //
+        return $userNotification;
     }
 
     /**
@@ -48,7 +51,10 @@ class UserNotificationController extends Controller
      */
     public function update(Request $request, UserNotification $userNotification)
     {
-        //
+        return $userNotification->update([
+            'user_id'=> $request->user_id,
+            'notification_id'=> $request->notification_id
+        ]);
     }
 
     /**
@@ -59,6 +65,6 @@ class UserNotificationController extends Controller
      */
     public function destroy(UserNotification $userNotification)
     {
-        //
+        return $userNotification->delete();
     }
 }

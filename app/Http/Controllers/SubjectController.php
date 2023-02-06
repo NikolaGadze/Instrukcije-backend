@@ -14,7 +14,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        return Subject::all();
     }
 
     /**
@@ -25,7 +25,10 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Subject::create([
+            'name'=> $request->name,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -36,7 +39,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+        return $subject;
     }
 
     /**
@@ -48,7 +51,10 @@ class SubjectController extends Controller
      */
     public function update(Request $request, Subject $subject)
     {
-        //
+        return $subject->update([
+            'name'=> $request->name,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -59,6 +65,6 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        //
+        return $subject->delete();
     }
 }

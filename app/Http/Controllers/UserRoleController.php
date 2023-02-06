@@ -14,7 +14,7 @@ class UserRoleController extends Controller
      */
     public function index()
     {
-        //
+        return UserRole::all();
     }
 
     /**
@@ -25,7 +25,11 @@ class UserRoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return UserRole::create([
+            'user_id'=> $request->user_id,
+            'role_id'=> $request->role_id,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -36,7 +40,7 @@ class UserRoleController extends Controller
      */
     public function show(UserRole $userRole)
     {
-        //
+        return $userRole;
     }
 
     /**
@@ -48,7 +52,11 @@ class UserRoleController extends Controller
      */
     public function update(Request $request, UserRole $userRole)
     {
-        //
+        return $userRole->update([
+            'user_id'=> $request->user_id,
+            'role_id'=> $request->role_id,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -59,6 +67,6 @@ class UserRoleController extends Controller
      */
     public function destroy(UserRole $userRole)
     {
-        //
+        return $userRole->delete();
     }
 }

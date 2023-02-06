@@ -14,7 +14,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        //
+        return Notification::all();
     }
 
     /**
@@ -25,7 +25,13 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Notification::create([
+            'user_from'=> $request->user_from,
+            'user_to'=> $request->user_to,
+            'message'=> $request->message,
+            'datetime'=> $request->datetime,
+            'opened'=> $request->opened
+        ]);
     }
 
     /**
@@ -36,7 +42,7 @@ class NotificationController extends Controller
      */
     public function show(Notification $notification)
     {
-        //
+        return $notification;
     }
 
     /**
@@ -48,7 +54,13 @@ class NotificationController extends Controller
      */
     public function update(Request $request, Notification $notification)
     {
-        //
+        return $notification->update([
+            'user_from'=> $request->user_from,
+            'user_to'=> $request->user_to,
+            'message'=> $request->message,
+            'datetime'=> $request->datetime,
+            'opened'=> $request->opened
+        ]);
     }
 
     /**
@@ -59,6 +71,6 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification)
     {
-        //
+        return $notification->delete();
     }
 }

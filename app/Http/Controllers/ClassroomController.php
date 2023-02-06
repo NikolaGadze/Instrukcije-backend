@@ -14,7 +14,7 @@ class ClassroomController extends Controller
      */
     public function index()
     {
-        //
+        return Classroom::all();
     }
 
     /**
@@ -25,7 +25,10 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Classroom::create([
+           "name"=> $request->name,
+           "status"=> $request->status
+        ]);
     }
 
     /**
@@ -36,7 +39,7 @@ class ClassroomController extends Controller
      */
     public function show(Classroom $classroom)
     {
-        //
+        return $classroom;
     }
 
     /**
@@ -48,7 +51,10 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
-        //
+        return $classroom->update([
+            "name"=> $request->name,
+            "status"=> $request->status
+        ]);
     }
 
     /**
@@ -59,6 +65,6 @@ class ClassroomController extends Controller
      */
     public function destroy(Classroom $classroom)
     {
-        //
+        return $classroom->delete();
     }
 }

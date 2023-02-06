@@ -14,7 +14,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        return Permission::all();
     }
 
     /**
@@ -25,7 +25,11 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Permission::create([
+           'path'=> $request->path,
+           'method'=> $request->method,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -36,7 +40,7 @@ class PermissionController extends Controller
      */
     public function show(Permission $permission)
     {
-        //
+        return $permission;
     }
 
     /**
@@ -48,7 +52,11 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        //
+        return $permission->update([
+            'path'=> $request->path,
+            'method'=> $request->method,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -59,6 +67,6 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        //
+        return $permission->delete();
     }
 }

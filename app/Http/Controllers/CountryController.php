@@ -14,7 +14,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        return Country::all();
     }
 
     /**
@@ -25,7 +25,9 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Country::create([
+            'name'=> $request->name
+        ]);
     }
 
     /**
@@ -36,7 +38,7 @@ class CountryController extends Controller
      */
     public function show(Country $country)
     {
-        //
+        return $country;
     }
 
     /**
@@ -48,7 +50,9 @@ class CountryController extends Controller
      */
     public function update(Request $request, Country $country)
     {
-        //
+        return $country->update([
+            'name'=> $request->name
+        ]);
     }
 
     /**
@@ -59,6 +63,6 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        //
+        return $country->delete();
     }
 }

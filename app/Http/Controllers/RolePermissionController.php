@@ -14,7 +14,7 @@ class RolePermissionController extends Controller
      */
     public function index()
     {
-        //
+        return RolePermission::all();
     }
 
     /**
@@ -25,7 +25,11 @@ class RolePermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return RolePermission::create([
+            'permission_id'=> $request->permission_id,
+            'role_id'=> $request->role_id,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -36,7 +40,7 @@ class RolePermissionController extends Controller
      */
     public function show(RolePermission $rolePermission)
     {
-        //
+        return $rolePermission;
     }
 
     /**
@@ -48,7 +52,11 @@ class RolePermissionController extends Controller
      */
     public function update(Request $request, RolePermission $rolePermission)
     {
-        //
+        return $rolePermission->update([
+            'permission_id'=> $request->permission_id,
+            'role_id'=> $request->role_id,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -59,6 +67,6 @@ class RolePermissionController extends Controller
      */
     public function destroy(RolePermission $rolePermission)
     {
-        //
+        return $rolePermission->delete();
     }
 }

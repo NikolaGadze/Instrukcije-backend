@@ -14,7 +14,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        return Schedule::all();
     }
 
     /**
@@ -25,7 +25,12 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Schedule::create([
+           'user_id'=> $request->user_id,
+           'subject_id'=> $request->subject_id,
+           'classroom_id'=> $request->classroom_id,
+           'role_id'=> $request->role_id
+        ]);
     }
 
     /**
@@ -36,7 +41,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
+        return $schedule;
     }
 
     /**
@@ -48,7 +53,12 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, Schedule $schedule)
     {
-        //
+        return $schedule->update([
+            'user_id'=> $request->user_id,
+            'subject_id'=> $request->subject_id,
+            'classroom_id'=> $request->classroom_id,
+            'role_id'=> $request->role_id
+        ]);
     }
 
     /**
@@ -59,6 +69,6 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+        return $schedule->delete();
     }
 }

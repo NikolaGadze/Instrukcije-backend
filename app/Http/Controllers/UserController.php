@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return User::all();
     }
 
     /**
@@ -25,7 +25,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return User::create([
+           'first_name'=> $request->first_name,
+            'last_name'=> $request->last_name,
+            'username'=> $request->username,
+            'email'=> $request->email,
+            'password'=> $request->password,
+            'phone'=> $request->phone,
+            'image'=> $request->image,
+            'city_id'=> $request->city_id,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -36,7 +46,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return $user;
     }
 
     /**
@@ -48,7 +58,17 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        return $user->update([
+            'first_name'=> $request->first_name,
+            'last_name'=> $request->last_name,
+            'username'=> $request->username,
+            'email'=> $request->email,
+            'password'=> $request->password,
+            'phone'=> $request->phone,
+            'image'=> $request->image,
+            'city_id'=> $request->city_id,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -59,6 +79,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        return $user->delete();
     }
 }

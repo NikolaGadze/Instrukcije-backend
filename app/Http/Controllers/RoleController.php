@@ -14,7 +14,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        return Role::all();
     }
 
     /**
@@ -25,7 +25,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Role::create([
+            'name'=> $request->name,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -36,7 +39,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        return $role;
     }
 
     /**
@@ -48,7 +51,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        return $role->update([
+            'name'=> $request->name,
+            'status'=> $request->status
+        ]);
     }
 
     /**
@@ -59,6 +65,6 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        return $role->delete();
     }
 }
