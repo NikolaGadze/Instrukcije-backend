@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('classrooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('message');
             $table->enum('status',['Active','Not Active']);
             $table->timestamps();
         });

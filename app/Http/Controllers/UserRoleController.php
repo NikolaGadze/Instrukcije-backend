@@ -2,19 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserRoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserRole::all();
+        $query = DB::table('users AS u')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'u.username', 'r.name AS role_name',)
+            ->join('user_roles AS ur', 'u.id', '=', 'ur.user_id')
+            ->join('roles AS r', 'r.id', '=', 'ur.role_id')
+            ->where('ur.role_id', '=', 2)
+            ->orWhere('ur.role_id', '=',3);
+
+        $data = $query->paginate(10);
+
+        return response()->json($data);
     }
 
     /**

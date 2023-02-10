@@ -25,7 +25,7 @@ class User extends Model
 
     public function role()
     {
-        return $this->belongsToMany(Role::class, 'User_roles', 'user_id', 'roles_id');
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
     }
 
     public function comments()
@@ -35,7 +35,7 @@ class User extends Model
 
     public function notifications()
     {
-        return $this->belongsToMany(Notification::class, 'UserNotifications', 'user_id', 'notification_id');
+        return $this->belongsToMany(Notification::class, 'user_notifications', 'user_id', 'notification_id');
     }
 
     public function schedule()

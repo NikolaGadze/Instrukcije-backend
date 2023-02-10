@@ -27,7 +27,8 @@ class ClassroomController extends Controller
     {
         return Classroom::create([
            "name"=> $request->name,
-           "status"=> $request->status
+           "status"=> $request->status,
+            "message"=> $request->message
         ]);
     }
 
@@ -53,7 +54,8 @@ class ClassroomController extends Controller
     {
         return $classroom->update([
             "name"=> $request->name,
-            "status"=> $request->status
+            "status"=> $request->status,
+            "message"=> $request->message
         ]);
     }
 

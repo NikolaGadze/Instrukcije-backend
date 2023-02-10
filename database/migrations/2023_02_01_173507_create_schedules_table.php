@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('subject_id')->constrained('subjects');
-            $table->foreignId('classroom_id')->constrained('classrooms');
-            $table->foreignId('role_id')->constrained('roles');
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('subject_id')->nullable()->constrained('subjects');
+            $table->foreignId('classroom_id')->nullable()->constrained('classrooms');
+            $table->foreignId('role_id')->nullable()->constrained('roles');
             $table->timestamps();
         });
     }

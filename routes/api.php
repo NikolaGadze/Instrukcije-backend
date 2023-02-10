@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CommentController;
@@ -56,4 +57,9 @@ Route::apiResource('user-roles', UserRoleController::class);
 Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('role-permissions', RolePermissionController::class);
 Route::apiResource('schedules', ScheduleController::class);
+
+Route::prefix('auth')->group(function () {
+    Route::post('registerAsUser', [AuthController::class, 'registerAsUser']);
+    Route::post('registerAsInstructor', [AuthController::class, 'registerAsInstructor']);
+});
 
