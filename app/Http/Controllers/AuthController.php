@@ -12,6 +12,7 @@ use App\Models\UserRole;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use App\Models\Schedule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,41 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        $token = $user->createToken('pziToken')->plainTextToken;
+
+        return $token;
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer'
+        ]);
+    }
+
+
+
+
+        public function user(Request $request)
+    {
+        return Auth::user();
+    }
+
+
+
     public function registerAsUser(Request $request)
     {
         $validated = $request->validate([
@@ -97,5 +133,12 @@ class AuthController extends Controller
         ]);
 
         return $user;
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response('Success');
     }
 }
