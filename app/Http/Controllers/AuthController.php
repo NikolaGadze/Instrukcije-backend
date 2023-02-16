@@ -12,6 +12,7 @@ use App\Models\UserRole;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use App\Models\Schedule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,11 +67,18 @@ class AuthController extends Controller
             'phone' => 'required|string|unique:users',
             'country_name' => 'required|string',
             'city_name' => 'required|string',
+            'image' => 'nullable|image'
         ]);
 
         $country = Country::where('name', $request->country_name)->first();
         $city = City::where('name', $request->city_name)->first();
         $role = Role::where('name', $request->role_name)->first();
+
+        $image_path = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_path = $image->store('public/uploads');
+        }
 
         $user = User::create([
             'email' => $request->email,
@@ -81,6 +89,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'country_id' => $country->id,
             'city_id' => $city->id,
+            'image' => $image_path,
         ]);
 
         $userRole = UserRole::create([
@@ -103,12 +112,22 @@ class AuthController extends Controller
             'country_name' => 'required|string',
             'city_name' => 'required|string',
             'subject_name' => 'required|string',
+            'image' => 'nullable|image'
         ]);
 
         $country = Country::where('name', $request->country_name)->first();
         $city = City::where('name', $request->city_name)->first();
         $role = Role::where('name', $request->role_name)->first();
         $subject = Subject::where('name', $request->subject_name)->first();
+
+        $image_path = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_path = $image->store('public/uploads');
+        }
+
+
+
 
         $user = User::create([
             'email' => $request->email,
@@ -119,6 +138,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'country_id' => $country->id,
             'city_id' => $city->id,
+            'image' => $image_path,
         ]);
 
         $userRole = UserRole::create([
@@ -141,4 +161,189 @@ class AuthController extends Controller
 
         return response('Success');
     }
+
+    public function getAllInstructors(Request $request) {
+        $city = $request->city;
+        $country = $request->country;
+        $subject = $request->subject;
+        $first_name = $request->first_name;
+        $last_name = $request->last_name;
+
+        $query = DB::table('users as u')
+            ->join('cities as cy', 'u.city_id', '=', 'cy.id')
+            ->join('countries as cut', 'cy.country_id', '=', 'cut.id')
+            ->join('schedules as sch', 'u.id', '=', 'sch.user_id')
+            ->join('subjects as sub', 'sch.subject_id', '=', 'sub.id')
+            ->join('user_roles as ur', 'u.id', '=', 'ur.user_id')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'u.username', 'u.phone', 'u.image','cy.name as city_name', 'cut.name as country_name', 'sub.name as subject_name')
+            ->where('ur.role_id', 3)
+            ->where('u.status', 'Active');
+        if ($city != "")
+            $query->where('cy.name', 'like', "%$city%");
+        if ($country != "")
+            $query->where('cut.name', 'like', "%$country%");
+        if ($subject != "")
+            $query->where('sub.name', 'like', "%$subject%");
+        if ($first_name != "")
+            $query->where('u.first_name', 'like', "%$first_name%");
+        if ($last_name != "")
+            $query->where('u.last_name', 'like', "%$last_name%");
+
+
+        $data = $query->paginate(9);
+
+        if ($data->count() == 0) {
+            return response()->json(['message' => 'No results found'], 404);
+        }
+
+        return response()->json($data);
+    }
+
+    public function getAllUsers(Request $request) {
+        $search = $request->search;
+        $query = DB::table('users as u')
+            ->join('cities as cy', 'u.city_id', '=', 'cy.id')
+            ->join('countries as cut', 'cy.country_id', '=', 'cut.id')
+            ->join('user_roles as ur', 'u.id', '=', 'ur.user_id')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'u.username', 'u.phone', 'u.image','cy.name as city_name', 'cut.name as country_name')
+            ->where('ur.role_id', 2)
+            ->where('u.status', 'Active')
+            ->where(function ($q) use ($search) {
+                $q->where('u.first_name', 'like', "%$search%")
+                    ->orWhere('u.last_name', 'like', "%$search%")
+                    ->orWhere('cy.name', 'like', "%$search%")
+                    ->orWhere('cut.name', 'like', "%$search%");
+            });
+
+        $data = $query->paginate(10);
+
+        if ($data->count() == 0) {
+            return response()->json(['message' => 'No results found '], 404);
+        }
+
+        return response()->json($data);
+    }
+
+    public function getAllUserRoles(Request $request) {
+        $query = DB::table('users AS u')
+            ->select('u.id As user_id', 'u.first_name', 'u.last_name', 'u.email', 'u.username', 'r.name AS role_name',)
+            ->join('user_roles AS ur', 'u.id', '=', 'ur.user_id')
+            ->join('roles AS r', 'r.id', '=', 'ur.role_id')
+            ->where('u.status', 'Active')
+            ->where('ur.role_id', '=', 2)
+            ->orWhere('ur.role_id', '=',3);
+
+        $data = $query->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function deleteUsers($userId) {
+
+        $user = Auth::user();
+
+        /*if(!$user->isAdmin())
+            abort(403);*/
+
+        // Delete user data from user_roles table
+        DB::table('user_roles')->where('user_id', $userId)->delete();
+
+        // Delete user data from schedules table
+        DB::table('schedules')->where('user_id', $userId)->delete();
+
+        // Delete user data from users table
+        DB::table('users')->where('id', $userId)->delete();
+
+        return response()->json(['message' => 'User has been deleted successfully.'], 200);
+    }
+
+
+    public function showProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'email' => $user->email,
+                    'username' => $user->username,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'phone' => $user->phone,
+                    'country_name' => $user->city->country->name,
+                    'city_name' => $user->city->name,
+                    'image' => $user->image,
+                ]
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+    }
+
+
+    public function showInstructorProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            $userRole = DB::table('user_roles')->where('user_id', $user->id)->where('role_id', 3)->first();
+
+            if ($userRole) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'email' => $user->email,
+                        'username' => $user->username,
+                        'first_name' => $user->first_name,
+                        'last_name' => $user->last_name,
+                        'phone' => $user->phone,
+                        'country_name' => $user->city->country->name,
+                        'city_name' => $user->city->name,
+                        'subjects' => $user->schedules->load("subject"),
+                        'image' => $user->image,
+                    ]
+                ], 200);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+    }
+
+    public function searchInstructors(Request $request) {
+        $search = $request->search;
+        $query = DB::table('users as u')
+            ->join('cities as cy', 'u.city_id', '=', 'cy.id')
+            ->join('countries as cut', 'cy.country_id', '=', 'cut.id')
+            ->join('schedules as sch', 'u.id', '=', 'sch.user_id')
+            ->join('subjects as sub', 'sch.subject_id', '=', 'sub.id')
+            ->join('user_roles as ur', 'u.id', '=', 'ur.user_id')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'u.username', 'u.phone', 'u.image','cy.name as city_name', 'cut.name as country_name', 'sub.name as subject_name')
+            ->where('ur.role_id', 3)
+            ->where('u.status', 'Active')
+            ->where(function ($q) use ($search) {
+                $q->where('u.first_name', 'like', "%$search%")
+                    ->orWhere('u.last_name', 'like', "%$search%")
+                    ->orWhere('cy.name', 'like', "%$search%")
+                    ->orWhere('cut.name', 'like', "%$search%")
+                    ->orWhere('sub.name', 'like', "%$search%");
+            });
+
+        $data = $query->paginate(9);
+
+        if ($data->count() == 0) {
+            return response()->json(['message' => 'No results found for ' . $search], 404);
+        }
+
+        return response()->json($data);
+    }
+
+
+
 }

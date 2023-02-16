@@ -38,7 +38,7 @@ class User extends Model
         return $this->belongsToMany(Notification::class, 'user_notifications', 'user_id', 'notification_id');
     }
 
-    public function schedule()
+    public function schedules()
     {
         return $this->hasMany(Schedule::class, 'user_id');
     }

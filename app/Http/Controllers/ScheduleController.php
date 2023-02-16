@@ -15,7 +15,7 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->search;
+        /*$search = $request->search;
         $query = DB::table('users as u')
             ->join('cities as cy', 'u.city_id', '=', 'cy.id')
             ->join('countries as cut', 'cy.country_id', '=', 'cut.id')
@@ -39,9 +39,9 @@ class ScheduleController extends Controller
             return response()->json(['message' => 'No results found for ' . $search], 404);
         }
 
-        return response()->json($data);
+        return response()->json($data);*/
 
-        //return Schedule::all();
+        return Schedule::all();
     }
 
     /**
