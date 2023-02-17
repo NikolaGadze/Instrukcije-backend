@@ -37,7 +37,8 @@ class UserController extends Controller
             'phone'=> $request->phone,
             'image'=> $request->image,
             'city_id'=> $request->city_id,
-            'status'=> $request->status
+            'status'=> $request->status,
+            'description'=> $request->description
         ]);
 
     }
@@ -71,7 +72,8 @@ class UserController extends Controller
             'phone'=> $request->phone,
             'image'=> $request->image,
             'city_id'=> $request->city_id,
-            'status'=> $request->status
+            'status'=> $request->status,
+            'description'=> $request->description
         ]);
     }
 

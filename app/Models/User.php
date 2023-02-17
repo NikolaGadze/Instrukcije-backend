@@ -12,7 +12,7 @@ class User extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = ['first_name', 'last_name', 'username', 'email', 'password', 'phone', 'image', 'city_id', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'username', 'email', 'password', 'phone', 'image', 'city_id', 'status', 'description'];
 
     protected $hidden = ['password', 'remember_token'];
 

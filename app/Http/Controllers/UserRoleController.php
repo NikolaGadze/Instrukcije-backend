@@ -16,7 +16,10 @@ class UserRoleController extends Controller
      */
     public function index(Request $request)
     {
-        $query = DB::table('users AS u')
+
+        return UserRole::all();
+
+        /*$query = DB::table('users AS u')
             ->select('u.first_name', 'u.last_name', 'u.email', 'u.username', 'r.name AS role_name',)
             ->join('user_roles AS ur', 'u.id', '=', 'ur.user_id')
             ->join('roles AS r', 'r.id', '=', 'ur.role_id')
@@ -25,7 +28,7 @@ class UserRoleController extends Controller
 
         $data = $query->paginate(10);
 
-        return response()->json($data);
+        return response()->json($data);*/
     }
 
     /**

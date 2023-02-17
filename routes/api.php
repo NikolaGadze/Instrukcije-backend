@@ -62,18 +62,24 @@ Route::prefix('auth')->group(function () {
     Route::post('registerAsUser', [AuthController::class, 'registerAsUser']);
     Route::post('registerAsInstructor', [AuthController::class, 'registerAsInstructor']);
     Route::post('login', [AuthController::class, 'login']);
-    Route::get('all-instructors', [AuthController::class, 'getAllInstructors']);
-    Route::get('all-users', [AuthController::class, 'getAllUsers']);
-    Route::get('all-user-roles', [AuthController::class, 'getAllUserRoles']);
-    Route::delete('delete-users/{user_id}', [AuthController::class, 'deleteUsers']);
-    Route::get('show-profile', [AuthController::class, 'showProfile'])
+    Route::get('filter-instructors', [AuthController::class, 'filterInstructors'])
         ->middleware('auth:sanctum');
-    Route::get('show-instructor-profile', [AuthController::class, 'showInstructorProfile'])
+    Route::get('filter-users', [AuthController::class, 'filterUsers'])
+        ->middleware('auth:sanctum');
+    Route::get('all-user-roles', [AuthController::class, 'getAllUserRoles'])
+        ->middleware('auth:sanctum');
+    Route::delete('delete-users/{user_id}', [AuthController::class, 'deleteUsers'])
+        ->middleware('auth:sanctum');
+    Route::get('show-profile', [AuthController::class, 'showProfile'])
         ->middleware('auth:sanctum');
     Route::get('logout', [AuthController::class, 'logout'])
         ->middleware('auth:sanctum');
     Route::get('user', [AuthController::class, 'user'])
         ->middleware('auth:sanctum');
-    Route::get('search-instructors', [AuthController::class, 'searchInstructors']);
+    Route::get('search-instructors', [AuthController::class, 'searchInstructors'])
+        ->middleware('auth:sanctum');
+    Route::get('search-users', [AuthController::class, 'searchUsers'])
+        ->middleware('auth:sanctum');
+
 });
 

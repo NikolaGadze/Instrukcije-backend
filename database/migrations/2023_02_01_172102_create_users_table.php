@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('image')->nullable();
             $table->enum('status',['Active','Not Active']);
+            $table->text('description')->nullable();
             $table->foreignId('city_id')->constrained('cities');
             $table->rememberToken();
             $table->timestamps();
