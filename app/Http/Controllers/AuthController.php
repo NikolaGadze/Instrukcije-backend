@@ -279,7 +279,7 @@ class AuthController extends Controller
                 if ($country != "")
                     $query->where('cut.name', 'like', "%$country%");
                 if ($description != "")
-                    $query->where('sub.name', 'like', "%$description%");
+                    $query->where('u.description', 'like', "%$description%");
                 if ($first_name != "")
                     $query->where('u.first_name', 'like', "%$first_name%");
                 if ($last_name != "")
@@ -456,6 +456,33 @@ class AuthController extends Controller
             abort(403);
         }
     }
+
+
+    public function updateProfile(Request $request) {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+
+            'email' => 'required|email|unique:users',
+            'username' => 'required|string|unique:users',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'phone' => 'required|string|unique:users',
+
+        ]);
+        return $user->update([
+            'email' => $request->email,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'username' => $request->username,
+            'phone' => $request->phone,
+
+        ]);
+
+
+    }
+
+
 
 
 }

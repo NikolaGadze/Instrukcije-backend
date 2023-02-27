@@ -58,6 +58,10 @@ Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('role-permissions', RolePermissionController::class);
 Route::apiResource('schedules', ScheduleController::class);
 
+Route::get('countries', [CountryController::class, 'index']);
+Route::get('cities', [CityController::class, 'index']);
+Route::get('subjects', [SubjectController::class, 'index']);
+
 Route::prefix('auth')->group(function () {
     Route::post('registerAsUser', [AuthController::class, 'registerAsUser']);
     Route::post('registerAsInstructor', [AuthController::class, 'registerAsInstructor']);
@@ -79,6 +83,8 @@ Route::prefix('auth')->group(function () {
     Route::get('search-instructors', [AuthController::class, 'searchInstructors'])
         ->middleware('auth:sanctum');
     Route::get('search-users', [AuthController::class, 'searchUsers'])
+        ->middleware('auth:sanctum');
+    Route::put('update-profile', [AuthController::class, 'updateProfile'])
         ->middleware('auth:sanctum');
 
 });
