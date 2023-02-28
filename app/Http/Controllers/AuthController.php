@@ -51,7 +51,9 @@ class AuthController extends Controller
 
         public function user(Request $request)
     {
-        return Auth::user();
+        $user = Auth::user();
+        $user->load('role');
+        return $user;
     }
 
 
