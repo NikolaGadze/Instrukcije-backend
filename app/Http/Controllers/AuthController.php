@@ -17,7 +17,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Storage;
 
 class AuthController extends Controller
 {
@@ -56,8 +56,6 @@ class AuthController extends Controller
         return $user;
     }
 
-
-
     public function registerAsUser(Request $request)
     {
         $validated = $request->validate([
@@ -80,7 +78,8 @@ class AuthController extends Controller
         $image_path = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $image_path = $image->store('public/uploads');
+            $image_path = Storage::put('uploads', $image);
+           // $image_path = $image->store('public/uploads');
         }
 
         $user = User::create([

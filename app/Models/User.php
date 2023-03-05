@@ -6,12 +6,14 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $appends = ['image_url'];
     protected $fillable = ['first_name', 'last_name', 'username', 'email', 'password', 'phone', 'image', 'city_id', 'status', 'description'];
 
     protected $hidden = ['password', 'remember_token'];
@@ -41,5 +43,9 @@ class User extends Model
     public function schedules()
     {
         return $this->hasMany(Schedule::class, 'user_id');
+    }
+
+    public function getImageUrlAttribute() {
+        return Storage::url($this->image);
     }
 }
